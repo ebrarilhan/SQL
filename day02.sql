@@ -53,6 +53,7 @@ select isim from notlar;
 --constraint:
 --hangi datanin unique olmasini istiyorsak ondan sonra unique yazariz.
 --bir datanin null olmasini istemiyorsak ondan sonra not null yazariz.
+--unique null olabilir ve null degerleri birden fazla olabilir 
 CREATE TABLE ogrenciler7
 (
 ogrenci_no char(7) unique, 
@@ -66,12 +67,13 @@ select * from ogrenciler7;
 
 insert into ogrenciler7 values ('1234567','Ebrar','Ilhan',75.5,now());
 insert into ogrenciler7 values ('1234568','Said','Ilhan',75.5,now());
-insert into ogrenciler7 (ogrenci_no,soyisim,not_ort) values ('1234569','Evren',85.5)
+insert into ogrenciler7 (ogrenci_no,soyisim,not_ort) values ('1234569','Evren',85.5);
 --sonuncu eklemede not null kisitlamasi oldugu icin hata verdi. 
 --cunku isim kismi null olamayacagi icin bos gecemeyiz.
 
 
 --primary key olusturma:
+--bunlar null olamazlar ve ayni degeri alamazlar
 CREATE TABLE ogrenciler8
 (ogrenci_no char(7) primary key,
 isim varchar(20),
@@ -170,11 +172,12 @@ INSERT INTO calisanlar VALUES('10005', 'Mustafa Ali', 5000, '2018-04-14');
 INSERT INTO calisanlar VALUES('10006', 'Canan Yaş', NULL, '2019-04-12'); -- maas not null oldugu icin nulli kabul etmedi
 INSERT INTO calisanlar VALUES('10003', 'CAN', 5000, '2018-04-14');
 INSERT INTO calisanlar VALUES('10007', 'CAN', 5000, '2018-04-14'); -- calisanlar isim unique oldugu icin can kabul etmedi
-INSERT INTO calisanlar VALUES('10009', 'cem', '', '2018-04-14'); --syntax hatasi
+INSERT INTO calisanlar VALUES('10009', 'cem', '', '2018-04-14'); --syntax hatasi int old icin parantez olmaz
 INSERT INTO calisanlar VALUES('', 'osman', 2000, '2018-04-14');
 INSERT INTO calisanlar VALUES('', 'osman can', 2000, '2018-04-14');  -- primary key yani calisanlar unique old icin ikinci kez hiclik kabul etmez.
 INSERT INTO calisanlar VALUES( '10002', 'ayse Yılmaz' ,12000, '2018-04-14'); -- ayni primary key old icin kabul etmedi
-INSERT INTO calisanlar VALUES( null, 'filiz ' ,12000, '2018-04-14'); --id null kabul etmez cunku primary keydir
+INSERT INTO calisanlar VALUES( null, 'filiz ' ,12000, '2018-04-14'); --id primary old icin null kabul etmez cunku primary keydir
+INSERT INTO calisanlar VALUES('56', null, 2005, '2018-04-14');
 
 INSERT INTO adresler VALUES('10003','Mutlu Sok', '40.Cad.','IST');
 INSERT INTO adresler VALUES('10003','Can Sok', '50.Cad.','Ankara');
@@ -189,6 +192,7 @@ INSERT INTO adresler VALUES(NULL,'Ağa Sok', '30.Cad.','Maraş');
 
 select * from calisanlar;
 select * from adresler;
+
 
 
 --check ile sinirlandirma (constraints) yapma:
@@ -245,8 +249,8 @@ INSERT INTO ogrenciler3 VALUES(125, 'Kemal Yasa', 'Hasan',85);
 INSERT INTO ogrenciler3 VALUES(126, 'Nesibe Yilmaz', 'Ayse',95);
 INSERT INTO ogrenciler3 VALUES(127, 'Mustafa Bak', 'Can',99);
 INSERT INTO ogrenciler3 VALUES(127, 'Mustafa Bak', 'Ali', 99);
--- ismi Nesibe Yilmaz veya Mustafa Bak olan kayıtları silelim
 
+-- ismi Nesibe Yilmaz veya Mustafa Bak olan kayıtları silelim
 delete from ogrenciler3 where isim='Nesibe Yilmaz' or isim = 'Mustafa Bak';
 select * from ogrenciler3;
 

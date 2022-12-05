@@ -44,5 +44,48 @@ select * from ogrenciler2;
 
 
 
+create table sakali_grup 
+(
+isimler varchar(30),
+batch char(10),
+bolum varchar(20),
+puan int	
+);
+
+
+insert into sakali_grup values ('Ebrar','B103','Qa',6);
+
+select * from sakali_grup;
+
+insert into sakali_grup (isimler,batch,bolum) values ('Selmina','B103','Qa');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

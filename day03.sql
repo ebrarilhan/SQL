@@ -12,13 +12,14 @@ INSERT INTO ogrenciler3 VALUES(125, 'Kemal Yasa', 'Hasan',85);
 INSERT INTO ogrenciler3 VALUES(126, 'Nesibe Yilmaz', 'Ayse',95);
 INSERT INTO ogrenciler3 VALUES(127, 'Mustafa Bak', 'Can',99);
 INSERT INTO ogrenciler3 VALUES(127, 'Mustafa Bak', 'Ali', 99);
--- ismi Nesibe Yilmaz veya Mustafa Bak olan kayıtları silelim
 
+-- ismi Nesibe Yilmaz veya Mustafa Bak olan kayıtları silelim
 delete from ogrenciler3 where isim='Nesibe Yilmaz' or isim = 'Mustafa Bak';
 select * from ogrenciler3
 
 --veli ismi hasan olan datayi silelim
 delete from ogrenciler3 where veli_isim='Hasan';
+
 
 --truncate ile tablodaki tum verileri geri alinamaz sekilde silme
 truncate table ogrenciler3;
@@ -28,6 +29,7 @@ truncate table ogrenciler3;
 --on delete cascade
 drop table if exists talebeler; --eger talebeler tablosu varsa onu silecek
 drop table if exists notlar; --eger notlar tablosu varsa onu silecek
+
 
 CREATE TABLE talebeler
 (
@@ -59,7 +61,7 @@ INSERT INTO notlar VALUES ('126', 'Matematik',90);
 select * from talebeler;
 select * from notlar;
 
---notlar tablosundan telebe idsi 123 olan dtayi silelim
+--notlar tablosundan talebe idsi 123 olan dtayi silelim
 delete from notlar where talebe_id='123'; --siler, herhangi sorun yok child old icin
 
 --talebeler tablosundan id si 126 olan datayi silelim
@@ -75,6 +77,8 @@ data child tablo dan da silinir
 
 --in condition 
 drop table if exists musteriler;
+
+
 CREATE TABLE musteriler (
 urun_id int,
 musteri_isim varchar(50), 
@@ -94,7 +98,8 @@ select * from musteriler;
 
 --musteriler tablosundan urun ismi orange, apple veya apricot olan tum datalari listeleyiniz.
 select * from musteriler where urun_isim='Orange' or urun_isim='Apple' or urun_isim='Apricot'
---yukaridaki uzun yoldu
+
+
 select * from musteriler where urun_isim='Orange' and urun_id=10;
 
 
@@ -109,7 +114,7 @@ SELECT * FROM musteriler WHERE urun_isim NOT IN ('Palm');
 
 -- BETWEEN CONDITION
 /*BETWEEN Condition iki mantiksal ifade ile tanimlayabilecegimiz durumlari tek komutla
-yazabilme imkani verir. Yazdigimiz 2 sinirda araliga dahildir */
+yazabilme imkani verir. Yazdigimiz 2 sinir da araliga dahildir */
 
 --musteriler tablosundan id si 20 ile 40 arasinda olan tum verileri listeleyiniz.
 select * from musteriler where urun_id>=20 and urun_id<=40; --bunu between ile de yapabiliriz.
@@ -156,7 +161,7 @@ select * from markalar;
 -- Çalisan sayisi 15.000’den cok olan markalarin isimlerini ve bu markada 
 -- calisanlarin isimlerini ve maaşlarini listeleyin.
 SELECT isim,maas,isyeri FROM calisanlar3
-WHERE isyeri IN (SELECT marka_isim FROM markalar WHERE calisan_sayisi>15000);
+WHERE isyeri in (SELECT marka_isim FROM markalar WHERE calisan_sayisi>15000);
 
 
 -- marka_id’si 101’den büyük olan marka çalişanlarinin isim, maaş ve şehirlerini listeleyiniz
@@ -165,6 +170,13 @@ where isyeri in (Select marka_isim from markalar where marka_id>101);
 
 
 --ÖDEV- Ankara’da calisani olan markalarin marka id'lerini ve calisan sayilarini listeleyiniz.
+select marka_id, calisan_sayisi from markalar
+where marka_isim in (select isyeri from calisanlar3 where sehir='Ankara');
+
+
+--odev2:  marka id'si 101 olan marka ismiyle iliskili olan ismi veli yilmaz olanlarin ismini ve idsini getir
+select id, isim from calisanlar3 
+where isim='Veli Yilmaz' and isyeri in (select marka_isim from markalar where marka_id=101);
 
 
 
@@ -205,7 +217,7 @@ select * from calisanlar3;
 select * from markalar;
 
 select marka_id,marka_isim,
-(select count(sehir) as sehir_sayisi from calisanlar3 where marka_isim=isyeri) 
+(select count(sehir) as sehir_sayisi from calisanlar3 where marka_isim=isyeri)
 from markalar;
 						   
 -- Her markanin ismini, calisan sayisini ve o markaya ait calisanlarin
@@ -298,9 +310,12 @@ where exists (select urun_isim from mart where mart.urun_isim=nisan.urun_isim);
 
 
 --ÖDEV 1)- Ankara’da calisani olan markalarin marka id'lerini ve calisan sayilarini listeleyiniz.
+select marka_id, calisan_sayisi from markalar
+where marka_isim in (select isyeri from calisanlar3 where sehir='Ankara');
 --ODEV 2)Her iki ayda ortak satilmayan ürünlerin URUN_ISIM'lerini ve  bu ürünleri
  --NİSAN ayında satın alan MUSTERI_ISIM'lerini listeleyen bir sorgu yazınız.
-
+select urun_isim, musteri_isim from nisan
+where not exists (select urun_isim from mart where mart.urun_isim=nisan.urun_isim);
 
 
 
